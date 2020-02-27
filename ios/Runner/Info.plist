@@ -41,5 +41,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Para subir imagenes necesitamos acceso a tu galeria de fotos</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Para subir imagenes necesitamos acceso a tu camara</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Para subir imagenes necesitamos acceso a tu microfono</string>
 </dict>
 </plist>
