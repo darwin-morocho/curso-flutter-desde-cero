@@ -50,6 +50,8 @@ flutter:
    - assets/icons/home.svg
    - assets/icons/shop.svg
    - assets/icons/history.svg
+   - assets/icons/email.svg
+   - assets/icons/password.svg
    - assets/cover.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
