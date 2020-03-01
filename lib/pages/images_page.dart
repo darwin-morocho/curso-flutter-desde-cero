@@ -30,9 +30,9 @@ class _ImagesPageState extends State<ImagesPage> {
           child: Column(
             children: <Widget>[
               MyAppbar(
-                leftIcon: 'https://image.flaticon.com/icons/svg/860/860790.svg',
+                leftIcon: 'assets/icons/back.svg',
                 rightIcon:
-                    'https://image.flaticon.com/icons/svg/126/126501.svg',
+                    'assets/icons/chat.svg',
                 onRightClick: () {},
                 onLeftClick: () => Navigator.pop(context),
               ),

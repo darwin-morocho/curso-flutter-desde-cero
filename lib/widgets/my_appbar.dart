@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:my_flutter_app_2/pages/chat_page.dart';
 
 class MyAppbar extends StatelessWidget {
   final String leftIcon, rightIcon;
@@ -28,13 +27,16 @@ class MyAppbar extends StatelessWidget {
           CupertinoButton(
             onPressed: onLeftClick,
             padding: EdgeInsets.all(15),
-            child: SvgPicture.network(
+            child: SvgPicture.asset(
               leftIcon,
               width: 30,
             ),
           ),
-          Text("LOGO",
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
+          Image.network(
+            'https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo4.png',
+            width: 170,
+            color: Colors.black,
+          ),
           CupertinoButton(
             onPressed: onRightClick,
             padding: EdgeInsets.all(0),
@@ -42,7 +44,7 @@ class MyAppbar extends StatelessWidget {
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.all(15),
-                  child: SvgPicture.network(
+                  child: SvgPicture.asset(
                     rightIcon,
                     width: 30,
                   ),

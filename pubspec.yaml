@@ -14,7 +14,7 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.3.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,7 +27,7 @@ dependencies:
   after_layout: ^1.0.7+2
   cached_network_image: ^2.0.0
   image_picker: ^0.6.3+4
-  shared_preferences: ^0.5.6+2
+  shared_preferences: ^0.5.6+2 
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +53,14 @@ flutter:
    - assets/icons/history.svg
    - assets/icons/email.svg
    - assets/icons/password.svg
+   - assets/icons/pick-image.svg
+   - assets/icons/back.svg
+   - assets/icons/chat.svg
+   - assets/icons/logout.svg
+   - assets/icons/down-arrow.svg
+   - assets/icons/right-arrow.svg
+   - assets/icons/security.svg
+   - assets/icons/bell.svg
    - assets/cover.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
@@ -66,17 +74,20 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/RobotoCondensed-Bold.ttf
+        - asset: assets/fonts/RobotoCondensed-BoldItalic.ttf
+          style: italic
+        - asset: assets/fonts/RobotoCondensed-Italic.ttf
+          style: italic
+        - asset: assets/fonts/RobotoCondensed-Light.ttf
+        - asset: assets/fonts/RobotoCondensed-LightItalic.ttf
+          style: italic
+        - asset: assets/fonts/RobotoCondensed-Regular.ttf
+          
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

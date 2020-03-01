@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:my_flutter_app_2/pages/chat_page.dart';
-import 'package:my_flutter_app_2/pages/page_home_tabs/history_tab.dart';
-import 'package:my_flutter_app_2/pages/page_home_tabs/home_tab.dart';
-import 'package:my_flutter_app_2/pages/page_home_tabs/more_tab.dart';
-import 'package:my_flutter_app_2/pages/page_home_tabs/oferts_tab.dart';
+import 'package:my_flutter_app_2/pages/home_page_tabs/history_tab.dart';
+import 'package:my_flutter_app_2/pages/home_page_tabs/home_tab.dart';
+import 'package:my_flutter_app_2/pages/home_page_tabs/more_tab.dart';
+import 'package:my_flutter_app_2/pages/home_page_tabs/oferts_tab.dart';
 import 'package:my_flutter_app_2/widgets/my_appbar.dart';
-import 'package:my_flutter_app_2/widgets/my_btn.dart';
 import 'package:my_flutter_app_2/widgets/my_page_view.dart';
-import '../widgets/avatar.dart';
 import '../widgets/bottom_menu.dart';
-import '../widgets/circle_container.dart';
-import '../widgets/cronometer.dart';
 import 'images_page.dart';
-import 'post_page.dart';
 
 class HomePage extends StatefulWidget {
   static final routeName = 'home';
@@ -73,9 +67,9 @@ class _HomePageState extends State<HomePage> {
             children: <Widget>[
               // appbar
               MyAppbar(
-                leftIcon: 'https://image.flaticon.com/icons/svg/685/685662.svg',
+                leftIcon: 'assets/icons/pick-image.svg',
                 rightIcon:
-                    'https://image.flaticon.com/icons/svg/126/126501.svg',
+                    'assets/icons/chat.svg',
                 onRightClick: () {
                   final route = MaterialPageRoute(
                       builder: (BuildContext _) => ChatPage(
