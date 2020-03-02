@@ -30,6 +30,12 @@ class _MoreTabState extends State<MoreTab> {
     }
   }
 
+  _setEmail() {
+    Dialogs.intputEmail(context, onOk: (String text) {
+      print("input dialog $text");
+    },label: "Ingrese un email",placeholder: "example@domain.com");
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -66,7 +72,7 @@ class _MoreTabState extends State<MoreTab> {
                 style: TextStyle(color: Color(0xffaaaaaa)),
               ),
               label: 'Email',
-              onPressed: _confirm,
+              onPressed: _setEmail,
             ),
             LeftRightIconButton(
               leftIcon: 'assets/icons/security.svg',
