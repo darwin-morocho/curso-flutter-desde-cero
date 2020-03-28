@@ -13,7 +13,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-    return MaterialApp(
+    return GestureDetector(
+      onTap: () {
+        final FocusScopeNode currentFocus = FocusScope.of(context);
+        currentFocus.unfocus();
+      },
+      child: MaterialApp(
         home: SplashPage(),
         routes: {
           ImagesPage.routeName: (BuildContext context) => ImagesPage(),
@@ -22,9 +27,8 @@ class MyApp extends StatelessWidget {
           LoginPage.routeName: (_) => LoginPage(),
         },
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          fontFamily: 'Roboto'
-        ),
-      );
+        theme: ThemeData(fontFamily: 'Roboto'),
+      ),
+    );
   }
 }

@@ -2,11 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:my_flutter_app_2/api/account_api.dart';
-import 'package:my_flutter_app_2/pages/home_page.dart';
-import 'package:my_flutter_app_2/utils/dialogs.dart';
+import 'package:my_flutter_app_2/widgets/login_text_form_field.dart';
 import 'package:my_flutter_app_2/widgets/my_btn.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../blocs/pages/login/bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -102,56 +99,28 @@ class _LoginPageState extends State<LoginPage> {
                             key: _formKey,
                             child: Column(
                               children: <Widget>[
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                      hintText: "example.@domain.com",
-                                      labelText: "E-mail",
-                                      prefixIcon: Container(
-                                        width: 70,
-                                        height: 40,
-                                        padding: EdgeInsets.all(10),
-                                        child: SvgPicture.asset(
-                                            'assets/icons/email.svg',
-                                            color: Colors.black54),
-                                      ),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30))),
-                                  keyboardType: TextInputType.emailAddress,
-                                  keyboardAppearance: Brightness.light,
-                                  textInputAction: TextInputAction.next,
-                                  validator: _validateEmail,
+                                LoginTextFormField(
+                                  iconPath: 'assets/icons/email.svg',
+                                  hintText: "example.@domain.com",
+                                  labelText: "E-mail",
+                                  initialValue: 'eve.holt@reqres.in',
                                   onFieldSubmitted: (String text) {
                                     _focusNodePassword.nextFocus();
                                   },
-                                  initialValue: 'eve.holt@reqres.in',
+                                  validator: _validateEmail,
                                 ),
                                 SizedBox(height: 20),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                      hintText: "***********",
-                                      labelText: "Password",
-                                      prefixIcon: Container(
-                                        width: 70,
-                                        height: 40,
-                                        padding: EdgeInsets.all(10),
-                                        child: SvgPicture.asset(
-                                          'assets/icons/password.svg',
-                                          color: Colors.black54,
-                                        ),
-                                      ),
-                                      border: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(30))),
-                                  obscureText: true,
-                                  focusNode: _focusNodePassword,
-                                  keyboardAppearance: Brightness.light,
-                                  textInputAction: TextInputAction.send,
-                                  validator: _validatePassword,
+                                LoginTextFormField(
+                                  iconPath: 'assets/icons/password.svg',
+                                  hintText: "***********",
+                                  labelText: "Password",
                                   onFieldSubmitted: (String text) {
                                     _submit();
                                   },
                                   initialValue: 'citysalicka',
+                                  validator: _validatePassword,
+                                  focusNode: _focusNodePassword,
+                                  obscureText: true,
                                 ),
                                 SizedBox(
                                   height: 5,
