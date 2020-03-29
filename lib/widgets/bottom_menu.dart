@@ -40,14 +40,14 @@ class BottomMenu extends StatelessWidget {
                 children: <Widget>[
                   SvgPicture.asset(
                     item.iconPath,
-                    width: 35,
+                    width: 30,
                     color: isActive ? Colors.blue : Colors.black,
                   ),
                   SizedBox(height: 3),
                   Text(
                     item.label,
                     style: TextStyle(
-                        fontSize: 12,
+                        fontSize: 10,
                         color: isActive ? Colors.blue : Colors.black),
                   )
                 ],

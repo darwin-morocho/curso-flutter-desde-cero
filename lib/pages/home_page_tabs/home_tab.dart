@@ -1,6 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_flutter_app_2/api/account_api.dart';
+import 'package:my_flutter_app_2/api/youtube_api.dart';
+import 'package:my_flutter_app_2/models/play_list.dart';
+import 'package:my_flutter_app_2/pages/home_page_widgets/top_play_lists.dart';
 import 'package:my_flutter_app_2/widgets/circle_container.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -11,7 +15,10 @@ class HomeTab extends StatefulWidget {
 
 class _HomeTabState extends State<HomeTab> {
   AccountAPI _accountAPI = AccountAPI();
+  YouTubeAPI _youTubeAPI =
+      YouTubeAPI(apiKey: "AIzaSyAUOpSlooSVnbdHiZ5bDvg9LE-B5lEstGE");
   List<dynamic> _users = [];
+  List<PlayList> _playLists = [];
   bool _isLoading = true;
 
   @override
@@ -22,8 +29,11 @@ class _HomeTabState extends State<HomeTab> {
 
   _load() async {
     final users = await _accountAPI.getUsers(1);
+    final List<PlayList> playLists =
+        await _youTubeAPI.getPlayLists("UCwXdFgeE9KYzlDdR7TG9cMw");
     setState(() {
       _users.addAll(users);
+      _playLists.addAll(playLists);
       _isLoading = false;
     });
   }
@@ -53,7 +63,7 @@ class _HomeTabState extends State<HomeTab> {
                 ),
               ),
               gradient:
-                  LinearGradient(colors: [Colors.white, Color(0xfff0f0f0)]));
+                  LinearGradient(colors: [Colors.white, Color(0xffdddddd)]));
         },
         itemCount: 7,
         scrollDirection: Axis.horizontal,
@@ -67,33 +77,43 @@ class _HomeTabState extends State<HomeTab> {
       children: <Widget>[
         _isLoading
             ? _shimmer()
-            : Container(
-                height: 110,
-                child: ListView.builder(
-                  itemBuilder: (_, index) {
-                    final dynamic item = _users[index];
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(minWidth: 80),
-                        child: Column(
-                          children: <Widget>[
-                            Expanded(
-                              child: ClipOval(
-                                child: Image.network(
-                                  item['avatar'],
+            : Column(
+                children: <Widget>[
+                  Container(
+                    height: 110,
+                    child: ListView.builder(
+                      itemBuilder: (_, index) {
+                        final dynamic item = _users[index];
+                        return Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(minWidth: 80),
+                            child: Column(
+                              children: <Widget>[
+                                Expanded(
+                                  child: ClipOval(
+                                    child: CachedNetworkImage(
+                                      imageUrl: item['avatar'],
+                                      placeholder: (_, __) => Center(
+                                        child: CupertinoActivityIndicator(
+                                          radius: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                Text(item['first_name'])
+                              ],
                             ),
-                            Text(item['first_name'])
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                  itemCount: _users.length,
-                  scrollDirection: Axis.horizontal,
-                ),
+                          ),
+                        );
+                      },
+                      itemCount: _users.length,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                  ),
+                  TopPlayLists(items: _playLists),
+                ],
               )
       ],
     );
