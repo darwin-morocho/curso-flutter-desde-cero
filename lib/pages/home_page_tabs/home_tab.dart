@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:my_flutter_app_2/api/account_api.dart';
 import 'package:my_flutter_app_2/api/youtube_api.dart';
 import 'package:my_flutter_app_2/models/play_list.dart';
+import 'package:my_flutter_app_2/models/youtube_video.dart';
 import 'package:my_flutter_app_2/utils/extras.dart';
-import 'dart:math' as math;
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 import 'package:shimmer/shimmer.dart';
 
 class HomeTab extends StatefulWidget {
@@ -20,6 +21,7 @@ class _HomeTabState extends State<HomeTab> {
       YouTubeAPI(apiKey: "AIzaSyB6cuB4r9fc-ui6UJ46FntFtRhMe4vSARw");
   List<dynamic> _users = [];
   List<PlayList> _items = [];
+  List<YVideo> _newVideos = [];
   bool _isLoading = true;
 
   @override
@@ -31,9 +33,12 @@ class _HomeTabState extends State<HomeTab> {
   _load() async {
     final users = await _accountAPI.getUsers(1);
     final items = await _youTubeAPI.getPlayLists("UCwXdFgeE9KYzlDdR7TG9cMw");
+    final newVideos =
+        await _youTubeAPI.getActivities("UCwXdFgeE9KYzlDdR7TG9cMw");
     setState(() {
       _users.addAll(users);
       _items.addAll(items);
+      _newVideos.addAll(newVideos);
       _isLoading = false;
     });
   }
@@ -131,10 +136,155 @@ class _HomeTabState extends State<HomeTab> {
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                   ),
-                  TopPlayLists(items: _items)
+                  TopPlayLists(items: _items),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10, bottom: 10, top: 20),
+                    child: Text(
+                      "NUEVOS VIDEOS",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                  ),
+                  NewVideos(
+                    items: _newVideos,
+                  )
                 ],
               )
       ],
+    );
+  }
+}
+
+class NewVideos extends StatelessWidget {
+  final List<YVideo> items;
+  const NewVideos({Key key, this.items}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: List.generate(items.length, (index) {
+          final item = items[index];
+          return CupertinoButton(
+            padding: EdgeInsets.zero,
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) {
+                    return Container(
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 40,
+                          ),
+                          AspectRatio(
+                            aspectRatio: 16 / 9,
+                            child: Container(
+                              width: double.infinity,
+                              child: Stack(
+                                children: <Widget>[
+                                  CachedNetworkImage(imageUrl: item.thumbnail,width: double.infinity,fit: BoxFit.cover,),
+                                  Positioned.fill(
+                                      child: Center(
+                                    child: CupertinoButton(
+                                        child: Container(
+                                          width: 60,
+                                          height: 60,
+                                          child: Icon(
+                                            Icons.play_arrow,
+                                            color: Colors.white,
+                                            size: 30,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              color: Colors.black26,
+                                              shape: BoxShape.circle),
+                                        ),
+                                        onPressed: () {}),
+                                  ))
+                                ],
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  item.title,
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  item.description,
+                                  style: TextStyle(fontWeight: FontWeight.w300),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  });
+            },
+            child: AspectRatio(
+              aspectRatio: 12 / 3,
+              child: Container(
+                width: double.infinity,
+                margin: EdgeInsets.only(bottom: 10, left: 5, right: 5),
+                decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                  BoxShadow(color: Colors.black12, blurRadius: 8)
+                ]),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        flex: 3,
+                        child: Container(
+                          child: CachedNetworkImage(
+                            imageUrl: item.thumbnail,
+                            fit: BoxFit.cover,
+                          ),
+                        )),
+                    Expanded(
+                      flex: 4,
+                      child: Container(
+                        padding: EdgeInsets.all(8),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              item.title,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Expanded(
+                              child: Text(
+                                item.description,
+                                overflow: TextOverflow.fade,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w300, fontSize: 12),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
+        }),
+      ),
     );
   }
 }
@@ -265,19 +415,27 @@ class Dots extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width * 0.75;
     return Container(
+      padding: EdgeInsets.only(left: 15),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: List.generate(
             itemsCount,
-            (index) => Container(
-                  width: 10,
-                  height: 10,
-                  margin: EdgeInsets.symmetric(horizontal: 5),
-                  decoration: BoxDecoration(
-                      color:
-                          activePage == index ? Colors.black45 : Colors.black12,
-                      shape: BoxShape.circle),
+            (index) => InkWell(
+                  onTap: () {
+                    controller.jumpTo(width * index);
+                  },
+                  child: Container(
+                    width: 10,
+                    height: 10,
+                    margin: EdgeInsets.symmetric(horizontal: 5),
+                    decoration: BoxDecoration(
+                        color: activePage == index
+                            ? Colors.black45
+                            : Colors.black12,
+                        shape: BoxShape.circle),
+                  ),
                 )),
       ),
     );
@@ -350,4 +508,45 @@ class CustomScrollPhysics extends ScrollPhysics {
 
   @override
   bool get allowImplicitScrolling => false;
+}
+
+class VideoPlayer extends StatefulWidget {
+  final String videoId;
+
+  const VideoPlayer({Key key, @required this.videoId}) : super(key: key);
+  @override
+  _VideoPlayerState createState() => _VideoPlayerState();
+}
+
+class _VideoPlayerState extends State<VideoPlayer> {
+  YoutubePlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = YoutubePlayerController(
+      initialVideoId: widget.videoId,
+      flags: YoutubePlayerFlags(
+        autoPlay: true,
+        mute: true,
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _controller?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: YoutubePlayer(
+        controller: _controller,
+        showVideoProgressIndicator: true,
+        liveUIColor: Colors.redAccent,
+      ),
+    );
+  }
 }
