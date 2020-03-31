@@ -69,7 +69,7 @@ class _TopPlayListsState extends State<TopPlayLists> {
                     return Container(
                       width: itemWidth,
                       padding: EdgeInsets.symmetric(horizontal: 5),
-                      margin: EdgeInsets.only(bottom: 20),
+                      margin: EdgeInsets.only(bottom: 15),
                       decoration: BoxDecoration(
                           color: Colors.white,
                           boxShadow: [
@@ -159,8 +159,9 @@ class Dots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(left:10,bottom: 10),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: List.generate(count, (index) {
           return Container(
             width: 10,

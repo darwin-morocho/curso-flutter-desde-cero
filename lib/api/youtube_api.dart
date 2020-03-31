@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:meta/meta.dart' show required;
 import 'package:my_flutter_app_2/models/play_list.dart';
+import 'package:my_flutter_app_2/models/youtube_video.dart';
 
 class YouTubeAPI {
   final String apiKey;
@@ -34,6 +35,32 @@ class YouTubeAPI {
         final parsed = jsonDecode(response.body);
         final List<PlayList> items = (parsed['items'] as List)
             .map<PlayList>((item) => PlayList.fromJson(item))
+            .toList();
+        return items;
+      }
+      return [];
+    } catch (e) {
+      print(e);
+      return [];
+    }
+  }
+
+  Future<List<YouTubeVideo>> getNewVideos(String channelId) async {
+    try {
+      final String url = _getUrl('activities', {
+        "part": "snippet,contentDetails",
+        "channelId": channelId,
+        "key": this.apiKey,
+        "maxResults": "20"
+      });
+      print("url $url");
+
+      final response = await http.get(url);
+
+      if (response.statusCode == 200) {
+        final parsed = jsonDecode(response.body);
+        final List<YouTubeVideo> items = (parsed['items'] as List)
+            .map<YouTubeVideo>((item) => YouTubeVideo.fromJson(item))
             .toList();
         return items;
       }
