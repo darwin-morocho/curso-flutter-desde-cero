@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_bloc.dart';
 import 'package:my_flutter_app_2/pages/images_page.dart';
 import 'package:my_flutter_app_2/pages/login_page.dart';
 import 'package:my_flutter_app_2/pages/post_page.dart';
@@ -13,22 +15,26 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
-    return GestureDetector(
-      onTap: () {
-        final FocusScopeNode currentFocus = FocusScope.of(context);
-        currentFocus.unfocus();
-      },
-      child: MaterialApp(
-        home: SplashPage(),
-        routes: {
-          ImagesPage.routeName: (BuildContext context) => ImagesPage(),
-          HomePage.routeName: (_) => HomePage(),
-          PostsPage.routeName: (_) => PostsPage(),
-          LoginPage.routeName: (_) => LoginPage(),
-        },
-        debugShowCheckedModeBanner: false,
-        theme: ThemeData(fontFamily: 'Roboto'),
-      ),
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (_) => MasterBloc()),
+        ],
+        child: GestureDetector(
+          onTap: () {
+            final FocusScopeNode currentFocus = FocusScope.of(context);
+            currentFocus.unfocus();
+          },
+          child: MaterialApp(
+            home: SplashPage(),
+            routes: {
+              ImagesPage.routeName: (BuildContext context) => ImagesPage(),
+              HomePage.routeName: (_) => HomePage(),
+              PostsPage.routeName: (_) => PostsPage(),
+              LoginPage.routeName: (_) => LoginPage(),
+            },
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(fontFamily: 'Roboto'),
+          ),
+        ));
   }
 }

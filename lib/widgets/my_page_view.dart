@@ -16,6 +16,8 @@ class MyPageView extends StatefulWidget {
 class _MyPageViewState extends State<MyPageView> {
   List<int> _renderedPages = [0];
 
+  
+
   @override
   void didUpdateWidget(MyPageView oldWidget) {
     super.didUpdateWidget(oldWidget);

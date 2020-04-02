@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_bloc.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_events.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_state.dart';
 import 'package:my_flutter_app_2/pages/chat_page.dart';
 import 'package:my_flutter_app_2/pages/home_page_tabs/history_tab.dart';
 import 'package:my_flutter_app_2/pages/home_page_tabs/home_tab.dart';
@@ -17,8 +21,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentPage = 0;
-
   final _menu = [
     BottomMenuItem(
         iconPath: 'assets/icons/home.svg', label: 'Inicio', content: HomeTab()),
@@ -46,16 +48,22 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = BlocProvider.of<MasterBloc>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
-      bottomNavigationBar: BottomMenu(
-        currentPage: _currentPage,
-        onChanged: (int newCurrentPage) {
-          setState(() {
-            _currentPage = newCurrentPage;
-          });
+      bottomNavigationBar: BlocBuilder<MasterBloc, MasterState>(
+        builder: (_, state) {
+          return BottomMenu(
+            currentPage: state.currentTab,
+            onChanged: (int newCurrentPage) {
+              bloc.add(MasterSetTab(newCurrentPage));
+            },
+            items: _menu,
+          );
         },
-        items: _menu,
+        condition: (prevState, newState) =>
+            prevState.currentTab != newState.currentTab,
       ),
       body: SafeArea(
         top: true,
@@ -68,8 +76,7 @@ class _HomePageState extends State<HomePage> {
               // appbar
               MyAppbar(
                 leftIcon: 'assets/icons/pick-image.svg',
-                rightIcon:
-                    'assets/icons/chat.svg',
+                rightIcon: 'assets/icons/chat.svg',
                 onRightClick: () {
                   final route = MaterialPageRoute(
                       builder: (BuildContext _) => ChatPage(
@@ -85,10 +92,17 @@ class _HomePageState extends State<HomePage> {
               ),
 
               Expanded(
-                  child: MyPageView(
-                children: _menu.map<Widget>((item) => item.content).toList(),
-                currentPage: _currentPage,
-              ))
+                child: BlocBuilder<MasterBloc, MasterState>(
+                    builder: (_, state) {
+                      return MyPageView(
+                        children:
+                            _menu.map<Widget>((item) => item.content).toList(),
+                        currentPage: state.currentTab,
+                      );
+                    },
+                    condition: (prevState, newState) =>
+                        prevState.currentTab != newState.currentTab),
+              )
             ],
           ),
         ),

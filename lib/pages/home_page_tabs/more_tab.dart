@@ -1,43 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_bloc.dart';
+import 'package:my_flutter_app_2/blocs/pages/master_bloc/master_events.dart';
 import 'package:my_flutter_app_2/pages/login_page.dart';
 import 'package:my_flutter_app_2/utils/dialogs.dart';
 import 'package:my_flutter_app_2/widgets/avatar.dart';
 import 'package:my_flutter_app_2/widgets/left_right_icon_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MoreTab extends StatefulWidget {
-  @override
-  _MoreTabState createState() => _MoreTabState();
-}
-
-class _MoreTabState extends State<MoreTab> {
-  _logOut() async {
+class MoreTab extends StatelessWidget {
+  _logOut(BuildContext context) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     Navigator.pushNamedAndRemoveUntil(
         context, LoginPage.routeName, (_) => false);
   }
 
-  _confirm() async {
+  _confirm(BuildContext context, MasterBloc masterBloc) async {
     final isOk = await Dialogs.confirm(context,
         title: "ACCIÓN REQUERIDA",
         body: "Esta seguro de que desea salir de su cuenta?");
     print("isOk $isOk");
     if (isOk) {
-      _logOut();
+      masterBloc.add(MasterLogOut());
+      _logOut(context);
     }
   }
 
-  _setEmail() {
+  _setEmail(BuildContext context) {
     Dialogs.intputEmail(context, onOk: (String text) {
       print("input dialog $text");
-    },label: "Ingrese un email",placeholder: "example@domain.com");
+    }, label: "Ingrese un email", placeholder: "example@domain.com");
   }
 
   @override
   Widget build(BuildContext context) {
+    final MasterBloc bloc = BlocProvider.of<MasterBloc>(context);
     return Container(
       width: double.infinity,
       height: double.infinity,
@@ -72,7 +72,7 @@ class _MoreTabState extends State<MoreTab> {
                 style: TextStyle(color: Color(0xffaaaaaa)),
               ),
               label: 'Email',
-              onPressed: _setEmail,
+              onPressed: () => _setEmail(context),
             ),
             LeftRightIconButton(
               leftIcon: 'assets/icons/security.svg',
@@ -81,7 +81,7 @@ class _MoreTabState extends State<MoreTab> {
                 width: 20,
               ),
               label: 'Configuraciones de privacidad',
-              onPressed: _confirm,
+              onPressed: () => _setEmail(context),
             ),
             LeftRightIconButton(
               leftIcon: 'assets/icons/bell.svg',
@@ -89,12 +89,12 @@ class _MoreTabState extends State<MoreTab> {
                   style:
                       TextStyle(color: Color(0xffaaaaaa), letterSpacing: 0.5)),
               label: 'Notificaciones Push',
-              onPressed: _confirm,
+              onPressed: () => _setEmail(context),
             ),
             LeftRightIconButton(
               leftIcon: 'assets/icons/logout.svg',
               label: 'Cerrar Sesión',
-              onPressed: _confirm,
+              onPressed: () => _confirm(context,bloc),
             )
           ],
         ),
