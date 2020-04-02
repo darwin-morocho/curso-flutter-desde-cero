@@ -34,6 +34,7 @@ dependencies:
   bloc: ^3.0.0
   flutter_bloc: ^3.2.0
   flutter_youtube: ^2.0.0
+  share: ^0.6.3+6
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +69,7 @@ flutter:
    - assets/icons/security.svg
    - assets/icons/bell.svg
    - assets/icons/box.svg
+   - assets/icons/heart.svg
    - assets/cover.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see

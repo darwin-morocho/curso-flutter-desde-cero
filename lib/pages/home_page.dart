@@ -29,8 +29,8 @@ class _HomePageState extends State<HomePage> {
         label: 'Historial',
         content: HistoryTab()),
     BottomMenuItem(
-        iconPath: 'assets/icons/shop.svg',
-        label: 'Ofertas',
+        iconPath: 'assets/icons/heart.svg',
+        label: 'Favoritos',
         content: OfertsTab()),
     BottomMenuItem(
         iconPath: 'assets/icons/menu.svg', label: 'Más', content: MoreTab()),

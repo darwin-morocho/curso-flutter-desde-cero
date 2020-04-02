@@ -1,7 +1,14 @@
 import 'dart:async';
-
+import 'package:meta/meta.dart' show required;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+class DialogOption {
+  final String label;
+  final dynamic value;
+
+  DialogOption({@required this.label, @required this.value});
+}
 
 class Dialogs {
   static Future<void> alert(BuildContext context,
@@ -72,6 +79,65 @@ class Dialogs {
                   onPressed: () {
                     Navigator.pop(context);
                     c.complete(false);
+                  },
+                  child: Text(
+                    cancelText,
+                    style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300),
+                  )),
+            ),
+          );
+        });
+
+    return c.future;
+  }
+
+  static Future<dynamic> select(BuildContext context,
+      {String title,
+      String body,
+      @required List<DialogOption> options,
+      String cancelText = "Cancelar"}) async {
+    final Completer<dynamic> c = Completer();
+
+    showCupertinoModalPopup(
+        context: context,
+        builder: (_) {
+          return Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.transparent,
+            alignment: Alignment.bottomCenter,
+            child: CupertinoActionSheet(
+              title: title != null
+                  ? Text(
+                      title,
+                      style: TextStyle(color: Colors.black, fontSize: 20),
+                    )
+                  : null,
+              message: body != null
+                  ? Text(body, style: TextStyle(fontSize: 16))
+                  : null,
+              actions: List.generate(options.length, (index) {
+                final DialogOption option = options[index];
+                return CupertinoActionSheetAction(
+                    onPressed: () {
+                      Navigator.pop(context);
+                      c.complete(option.value);
+                    },
+                    child: Text(
+                      option.label,
+                      style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 17,
+                          fontWeight: FontWeight.w300),
+                    ));
+              }),
+              cancelButton: CupertinoActionSheetAction(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    c.complete(null);
                   },
                   child: Text(
                     cancelText,
