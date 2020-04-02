@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_flutter_app_2/models/play_list.dart';
+import 'package:my_flutter_app_2/pages/play_list_videos_page.dart';
 import 'package:my_flutter_app_2/utils/extras.dart';
 
 class TopPlayLists extends StatefulWidget {
@@ -75,49 +76,62 @@ class _TopPlayListsState extends State<TopPlayLists> {
                           boxShadow: [
                             BoxShadow(color: Colors.black12, blurRadius: 10)
                           ]),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Expanded(
-                            child: CachedNetworkImage(
-                              imageUrl: item.banner,
-                              width: double.infinity,
-                              fit: BoxFit.cover,
+                      child: CupertinoButton(
+                        onPressed: () {
+                          final route = MaterialPageRoute(
+                              builder: (_) => PlayListVideosPage(
+                                    playListId: item.id,
+                                  ));
+                          Navigator.push(context, route);
+                        },
+                        padding: EdgeInsets.zero,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              child: CachedNetworkImage(
+                                imageUrl: item.banner,
+                                width: double.infinity,
+                                fit: BoxFit.cover,
+                              ),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.all(10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  item.title,
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: <Widget>[
-                                    Text(
-                                      Extras.fromNow(item.publishedAt),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300),
-                                    ),
-                                    Text(
-                                      "Videos: ${item.itemCount}",
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w300),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
+                            Padding(
+                              padding: EdgeInsets.all(10),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    item.title,
+                                    style: TextStyle(
+                                        fontSize: 17,
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: <Widget>[
+                                      Text(
+                                        Extras.fromNow(item.publishedAt),
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w300),
+                                      ),
+                                      Text(
+                                        "Videos: ${item.itemCount}",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54,
+                                            fontWeight: FontWeight.w300),
+                                      )
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     );
                   }),
@@ -159,7 +173,7 @@ class Dots extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left:10,bottom: 10),
+      padding: EdgeInsets.only(left: 10, bottom: 10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: List.generate(count, (index) {
