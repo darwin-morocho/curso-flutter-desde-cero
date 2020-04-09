@@ -17,6 +17,8 @@ class MasterBloc extends Bloc<MasterEvents, MasterState> {
       yield* _removeFromHistory(event);
     } else if (event is MasterLogOut) {
       yield this.state.copyWith(history: [], currentTab: 0);
+    } else if (event is MasterAddToFavorites) {
+      yield* _addToFavorites(event);
     }
   }
 
@@ -31,6 +33,20 @@ class MasterBloc extends Bloc<MasterEvents, MasterState> {
       final history = List<YouTubeVideo>.from(this.state.history);
       history.add(event.youTubeVideo);
       yield this.state.copyWith(history: history);
+    }
+  }
+
+  Stream<MasterState> _addToFavorites(MasterAddToFavorites event) async* {
+    final int index = this
+        .state
+        .favorites
+        .indexWhere((item) => item.videoId == event.youTubeVideo.videoId);
+
+    if (index == -1) {
+      // event.youTubeVideo
+      final favorites = List<YouTubeVideo>.from(this.state.favorites);
+      favorites.add(event.youTubeVideo);
+      yield this.state.copyWith(favorites: favorites);
     }
   }
 

@@ -8,7 +8,7 @@ import 'package:my_flutter_app_2/pages/chat_page.dart';
 import 'package:my_flutter_app_2/pages/home_page_tabs/history_tab.dart';
 import 'package:my_flutter_app_2/pages/home_page_tabs/home_tab.dart';
 import 'package:my_flutter_app_2/pages/home_page_tabs/more_tab.dart';
-import 'package:my_flutter_app_2/pages/home_page_tabs/oferts_tab.dart';
+import 'package:my_flutter_app_2/pages/home_page_tabs/favorites_tab.dart';
 import 'package:my_flutter_app_2/widgets/my_appbar.dart';
 import 'package:my_flutter_app_2/widgets/my_page_view.dart';
 import '../widgets/bottom_menu.dart';
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     BottomMenuItem(
         iconPath: 'assets/icons/heart.svg',
         label: 'Favoritos',
-        content: OfertsTab()),
+        content: FavoritesTab()),
     BottomMenuItem(
         iconPath: 'assets/icons/menu.svg', label: 'Más', content: MoreTab()),
   ];

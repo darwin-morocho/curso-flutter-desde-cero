@@ -12,6 +12,12 @@ class MasterAddToHistory extends MasterEvents {
   MasterAddToHistory(this.youTubeVideo);
 }
 
+class MasterAddToFavorites extends MasterEvents {
+  final YouTubeVideo youTubeVideo;
+  MasterAddToFavorites(this.youTubeVideo);
+}
+
+
 class MasterRemoveFromHistory extends MasterEvents {
   final int index;
   MasterRemoveFromHistory(this.index);

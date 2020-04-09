@@ -24,10 +24,12 @@ class YouTubeVideoItem extends StatelessWidget {
           DialogOption(label: "Compartir", value: 0),
           DialogOption(label: "Agregar a favoritos", value: 1),
         ]);
-
+ 
         if(value!=null){
           if(value==0){
             Share.share("https://www.youtube.com/watch?v=${item.videoId}");
+          }else if(value==1){
+            masterBloc.add(MasterAddToFavorites(item));
           }
         }
 
